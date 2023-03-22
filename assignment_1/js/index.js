@@ -10,7 +10,7 @@ function getId() {
 
     let id = (lastCar?.id)
 
-    return id
+    return id + 1;
 }
 
 function createNewId() {

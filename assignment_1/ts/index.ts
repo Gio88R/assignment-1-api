@@ -2,14 +2,16 @@
 import express from "express";
 // Import cars
 import { cars, ICar } from "./cars";
+//Import books
+import {books, IBook} from "./books";
 
 function getId() {
     // Get the last item in array
-    const lastCar = cars.slice(-1)[0]
+    const lastBook = books.slice(-1)[0]
 
-    let id = (lastCar?.id)
+    let id = (lastBook?.id)
 
-    return id
+    return id + 1;
 }
 
 function createNewId(): number {
@@ -19,51 +21,84 @@ function createNewId(): number {
 
 
 
-// Initialize express and set up the root route (start page)
+// Initialize express and set up the root route (start page) adapt depending on item/array/page
 
 const app = express()
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
-    res.send("Cars")
+app.get('/books', (req, res) => {
+    res.send("Books")
 })
 
 // Start the server
 
-app.listen(8000, () => {
-    console.log("http://localhost:8000")
-})
 
 // Set up cars route to serve all cars
 
-app.get('/cars', (req, res) => {
-    res.send(cars)
-})
+// app.get('/cars', (req, res) => {
+//     res.send(cars)
+// })
 
 // Set up car route to fetch only one car by id
 
-app.get('/cars/:id', (req, res) => {
+// app.get('/cars/:id', (req, res) => {
+//     const id = parseInt(req.params.id)
+
+//     const car = cars.find(c => c.id === id)
+
+//     if (car) {
+//         res.send(car)
+//     } else {
+//         res.sendStatus(404)
+//     }
+// })
+
+// app.post('/cars', (req, res) => {
+//     const newId = createNewId()
+//     const newCar: ICar = {
+//         id: newId,
+//         make: req.body.make,
+//         model: req.body.model,
+//     }
+
+//     cars.push(newCar)
+
+//     res.send(newId.toString())
+// })
+
+//Book codes
+
+//Routes to serve all books
+app.get('/books', (req, res) => {
+    res.send(books)
+})
+
+//Routes to serve one car by id
+app.get('/books/:id', (req, res) => {
     const id = parseInt(req.params.id)
 
-    const car = cars.find(c => c.id === id)
+    const book = books.find(c => c.id === id)
 
-    if (car) {
-        res.send(car)
+    if (book) {
+        res.send(book)
     } else {
         res.sendStatus(404)
     }
 })
 
-app.post('/cars', (req, res) => {
+app.post('/books', (req, res) => {
     const newId = createNewId()
-    const newCar: ICar = {
+    const newBook: IBook = {
         id: newId,
-        make: req.body.make,
-        model: req.body.model,
+        ISBN: req.body.ISBN,
+        title: req.body.model,
     }
 
-    cars.push(newCar)
+    books.push(newBook)
 
     res.send(newId.toString())
+})
+app.listen(8000, () => {
+    console.log("http://localhost:8000")
 })
